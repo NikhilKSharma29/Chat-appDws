@@ -38,12 +38,10 @@ export default function ChatInput({ onSendMessage, isSending = false }) {
   };
 
   const handleFileUpload = () => {
-    // TODO: Implement file upload
     console.log('File upload clicked');
   };
 
   const handleVoiceInput = () => {
-    // TODO: Implement voice input
     console.log('Voice input clicked');
   };
 
