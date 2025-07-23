@@ -26,7 +26,7 @@ const AIChatPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSendMessage = (message) => {
+  const handleSendMessage = async (message) => {
     if (!message.trim()) return;
 
     const userMessage = {
@@ -37,23 +37,118 @@ const AIChatPage = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    
+    // Show loading state
+    const loadingMessage = {
+      id: 'loading-' + Date.now(),
+      text: 'Thinking...',
+      sender: 'ai',
+      timestamp: new Date(),
+      isLoading: true
+    };
+    
+    setMessages(prev => [...prev, loadingMessage]);
 
-    setTimeout(() => {
-      const aiResponses = [
-        "I understand you said: " + message,
-        "That's an interesting point about " + message,
-        "Thanks for sharing that with me!",
-        "I'll look into that for you.",
-        "Could you tell me more about that?",
+    try {
+      // Prepare messages array in the format expected by the API
+      const chatMessages = [
+        ...messages.map(msg => ({
+          role: msg.sender === 'user' ? 'user' : 'assistant',
+          content: msg.text
+        })),
+        { role: 'user', content: message }
       ];
-      const aiMessage = {
-        id: Date.now() + 1,
-        text: aiResponses[Math.floor(Math.random() * aiResponses.length)],
-        sender: "ai",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, aiMessage]);
-    }, 1000);
+
+      console.log('Sending request to API with messages:', chatMessages);
+      
+      let response;
+      let responseData;
+      
+      try {
+        response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ messages: chatMessages }),
+        });
+        
+        console.log('API response status:', response.status);
+        
+        // First, get the response as text to handle potential non-JSON responses
+        const responseText = await response.text();
+        
+        // Try to parse as JSON, but handle cases where it's not valid JSON
+        try {
+          responseData = responseText ? JSON.parse(responseText) : {};
+        } catch (jsonError) {
+          console.error('Failed to parse API response as JSON:', jsonError);
+          throw new Error(`Invalid response from server: ${response.status} ${response.statusText}`);
+        }
+        
+        console.log('API response data:', responseData);
+
+        if (!response.ok) {
+          throw new Error(
+            responseData.error || 
+            responseData.message || 
+            `Request failed with status ${response.status}`
+          );
+        }
+      } catch (fetchError) {
+        console.error('Fetch error:', fetchError);
+        
+        // Handle quota exceeded error specifically
+        if (fetchError.message.includes('quota') || fetchError.message.includes('billing')) {
+          throw new Error(
+            '⚠️ ' + fetchError.message + '\n\n' +
+            'To continue using the chat, you can:\n' +
+            '1. Check your OpenAI account billing status\n' +
+            '2. Update your payment method if needed\n' +
+            '3. Or wait for your quota to reset'
+          );
+        }
+        
+        throw new Error(fetchError.message || 'Failed to connect to the server');
+      }
+      
+      // Remove loading message and add AI response
+      setMessages(prev => {
+        const newMessages = prev.filter(msg => !msg.isLoading);
+        return [
+          ...newMessages,
+          {
+            id: responseData.id || Date.now() + 1,
+            text: responseData.content,
+            sender: 'ai',
+            timestamp: new Date(responseData.timestamp || Date.now()),
+          }
+        ];
+      });
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      // Remove loading message and show error
+      setMessages(prev => {
+        const newMessages = prev.filter(msg => !msg.isLoading);
+        const fallbackResponses = [
+          `I'm having trouble connecting to the AI service. (${error.message})`,
+          `Sorry, I encountered an error: ${error.message}`,
+          `I'm unable to process your request: ${error.message}`
+        ];
+        
+        return [
+          ...newMessages,
+          {
+            id: Date.now() + 1,
+            text: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
+            sender: 'ai',
+            timestamp: new Date(),
+            isError: true
+          }
+        ];
+      });
+    }
   };
 
   const handleQuickPrompt = (prompt) => {
