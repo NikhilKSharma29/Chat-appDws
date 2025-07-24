@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect, useRef } from 'react';
-import { FiSend, FiPaperclip, FiMic } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from "react";
+import { FiSend, FiPaperclip, FiMic } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ChatInput({ onSendMessage, isSending = false }) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
 
@@ -12,7 +12,7 @@ export default function ChatInput({ onSendMessage, isSending = false }) {
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = 'auto';
+      textarea.style.height = "auto";
       textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
     }
   }, [input]);
@@ -21,40 +21,39 @@ export default function ChatInput({ onSendMessage, isSending = false }) {
     e?.preventDefault();
     const message = input.trim();
     if (!message) return;
-    
+
     onSendMessage(message);
-    setInput('');
+    setInput("");
     // Reset textarea height after sending
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = "auto";
     }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend(e);
     }
   };
 
   const handleFileUpload = () => {
-    console.log('File upload clicked');
+    console.log("File upload clicked");
   };
 
   const handleVoiceInput = () => {
-    console.log('Voice input clicked');
+    console.log("Voice input clicked");
   };
 
   return (
     <form onSubmit={handleSend} className="w-full">
-      <div 
+      <div
         className={`relative flex items-end w-full bg-white dark:bg-gray-800 rounded-2xl border transition-all duration-200 ${
-          isFocused 
-            ? 'border-blue-400 dark:border-blue-600 ring-2 ring-blue-100 dark:ring-blue-900/50' 
-            : 'border-gray-200 dark:border-gray-600'
+          isFocused
+            ? "border-blue-400 dark:border-blue-600 ring-2 ring-blue-100 dark:ring-blue-900/50"
+            : "border-gray-200 dark:border-gray-600"
         }`}
       >
-        {/* Attachment button */}
         <button
           type="button"
           onClick={handleFileUpload}
@@ -76,7 +75,7 @@ export default function ChatInput({ onSendMessage, isSending = false }) {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             className="w-full px-2 py-3 bg-transparent border-0 focus:ring-0 resize-none overflow-hidden max-h-32 scrollbar-hide"
-            style={{ minHeight: '44px' }}
+            style={{ minHeight: "44px" }}
           />
         </div>
 
@@ -112,12 +111,16 @@ export default function ChatInput({ onSendMessage, isSending = false }) {
           </AnimatePresence>
         </div>
       </div>
-      
+
       {/* Character counter */}
       <div className="mt-1 flex justify-end">
-        <span className={`text-xs ${
-          input.length > 500 ? 'text-red-500' : 'text-gray-400 dark:text-gray-500'
-        }`}>
+        <span
+          className={`text-xs ${
+            input.length > 500
+              ? "text-red-500"
+              : "text-gray-400 dark:text-gray-500"
+          }`}
+        >
           {input.length}/500
         </span>
       </div>
