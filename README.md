@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Chat Application
 
-## Getting Started
+A modern, responsive chat application built with Next.js and OpenAI's API, featuring real-time messaging, emoji support, and toast notifications.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Real-time chat interface
+- Emoji picker for expressive messaging
+- Responsive design for desktop and mobile
+- Toast notifications for user feedback
+- Clean and modern UI with smooth animations
+- Powered by OpenAI's advanced language models
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Tech Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Frontend Framework**: [Next.js 15](https://nextjs.org/)
+- **UI Components**: React 19
+- **Styling**: Tailwind CSS
+- **Icons**: Hero Icons & React Icons
+- **State Management**: React Hooks
+- **Date Handling**: date-fns
+- **Emoji Support**: emoji-mart
+- **Notifications**: react-hot-toast
+- **AI Integration**: OpenAI API
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js 18.0 or later
+- npm or yarn
+- OpenAI API key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/NikhilKSharma29/Chat-appDws
+   cd aichat-app
+   ```
 
-## Deploy on Vercel
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Create a `.env.local` file in the root directory and add your OpenAI API key:
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Run the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## 📱 Screenshots
+
+### Desktop View
+![Desktop View](/public/desktop.png)
+
+### Tablet View
+![Tablet View](/public/tab.png)
+
+### Mobile View
+![Mobile View](/public/mobile.png)
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- Icons by [Hero Icons](https://heroicons.com/)
+- Emoji support by [emoji-mart](https://github.com/missive/emoji-mart)

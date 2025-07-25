@@ -12,18 +12,18 @@ const AIChatPage = () => {
 
   // Load messages from localStorage on component mount
   useEffect(() => {
-    const savedMessages = localStorage.getItem('chatHistory');
+    const savedMessages = localStorage.getItem("chatHistory");
     if (savedMessages) {
       try {
         const parsedMessages = JSON.parse(savedMessages);
         // Convert string timestamps back to Date objects
-        const messagesWithDates = parsedMessages.map(msg => ({
+        const messagesWithDates = parsedMessages.map((msg) => ({
           ...msg,
-          timestamp: new Date(msg.timestamp)
+          timestamp: new Date(msg.timestamp),
         }));
         setMessages(messagesWithDates);
       } catch (error) {
-        console.error('Failed to parse saved messages:', error);
+        console.error("Failed to parse saved messages:", error);
         setDefaultMessage();
       }
     } else {
@@ -34,7 +34,7 @@ const AIChatPage = () => {
   // Save messages to localStorage whenever they change
   useEffect(() => {
     if (messages.length > 0) {
-      localStorage.setItem('chatHistory', JSON.stringify(messages));
+      localStorage.setItem("chatHistory", JSON.stringify(messages));
     }
   }, [messages]);
 
@@ -50,9 +50,7 @@ const AIChatPage = () => {
   };
 
   const handleNewChat = () => {
-    // Clear the chat history from localStorage
-    localStorage.removeItem('chatHistory');
-    // Reset to default welcome message
+    localStorage.removeItem("chatHistory");
     setDefaultMessage();
   };
 
@@ -191,7 +189,9 @@ const AIChatPage = () => {
     <ChatLayout>
       <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
         <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
-          <h1 className="text-xl font-semibold text-gray-800 dark:text-white">AI Chat</h1>
+          <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
+            AI Chat
+          </h1>
           <button
             onClick={handleNewChat}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
@@ -199,7 +199,7 @@ const AIChatPage = () => {
             New Chat
           </button>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto">
           {messages.length <= 1 ? (
             <div className="h-full flex flex-col">
